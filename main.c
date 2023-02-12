@@ -109,7 +109,27 @@ char *readStr() {
 		}
 	} else {
 		char v = program[pc];
-		return lvars[v-'a'];
+		if (v>='a' && v<='z') return lvars[v-'a'];
+		else {
+			switch (rand()%4) {
+				case 0:
+					s = "Fix your freaking code.";
+					break;
+				case 1:
+					s = "Terminating.";
+					break;
+				case 2:
+					s = "No, silly!";
+					break;
+				case 3:
+					for (int i=0; i<(rand()%256)+256; i++) {
+						s[i] = (rand()%4)?rand()%256:'A';
+					}
+					strcat(s,"FATAL ERROR");
+			}
+			printf("Error: Invalid symbol at %d. %s\n", v, s);
+			exit(127);
+		}
 	}
 	s[i] = 0;
 	return s;
@@ -163,6 +183,7 @@ void nextInst() {
 		case 'o':
 			s = readStr();
 			fvars[program[pc]-'a'] = fopen(s, "r");
+			break;
 		case ' ':
 		case '\n':
 			break;
@@ -174,6 +195,7 @@ void nextInst() {
 }
 
 int main(int argc, char **argv) {
+	srand(time(NULL));
 	if (argc<2) {
 		printf("Usage: %s <file>\n", argv[0]);
 		return 1;
