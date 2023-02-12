@@ -1,0 +1,116 @@
+# YATE (Yet Another Text-based Esolang)
+
+YATE is an esolang, or esoteric programming language, that uses single-character commands and is almost entirely made of letters.
+
+## Numbers
+Numbers in YATE:
+
+- Aren't of a fixed length; instead, the interpreter reads digits until it finds a hyphen.
+- Are written in octal and reverse.
+- Are written using letters, using a specific letter-to-number system:
+
+	- For the first digit, 0 is R, 1 is S, 2 is L, 3 is U, 4 is N, 5 is B, 6 is E, and 7 is Z.
+	- The digits for the second digit are the same as the first one, except shifted left four spaces. Note that the digits roll over, so the second digit's numbers are N, B, E, Z, R, S, L, & U.
+	- Are negative if they begin with a hyphen.
+
+
+## Variables
+Variables in YATE are named after a lowercase letter of the alphabet. However, there there are some exceptions:
+
+Variable names F, L, and P are followed by another letter that indicates the actual variable name:
+
+- Variables that start with F are files.
+
+- Variables that begin with L are arrays of numbers; an array's length cannot be changed and is thus fixed.
+
+- Variables starting with P point to a position in the internal heap.
+
+### Internal Memory Allocation
+Arrays are allocated in the internal heap, a dynamically sized memory region allocated internally by the interpreter.
+
+In the standard interpreter, the heap may be, at maximum, 4 MB in size.
+
+If the program tries to expand the heap beyond that limit, the interpreter will throw an error and crash.
+
+## Commands
+### Parameters
+
+- If a parameter's name starts with "d", it only accepts a variable name.
+- If a parameter's value begins with a V, the V will be followed by a variable name.
+- If a parameter's name is "s", it is a string terminated by a hyphen.
+
+### Cheatsheet
+
+- `A<dx><y>`: Add y to dx.
+
+- `B(...`: Define block of code. A code block ends with a right bracket.
+
+- `C<r><g><b>`: Set the console colour.
+
+- `D<dx><y>`: Divide dx by y.
+
+- `E<x><y>(...)[(...)]`: If x is equal to y, execute the 1st block of code; else, execute the 2nd block of code.
+
+- `F<d>(...)`: Define function d.
+
+- `G<x><y>(...)[(...)]`: If x is greater than y, execute the 1st block of code; else, execute the 2nd block of code.
+
+- `H<n><ds>`: Set ds's contents to n stringified.
+- `I<arr><n><d>`: Set d to the nth element of arr.
+- `J<n>`: Jump to relative position n.
+- `K<n>`: Jump to absolute poisiton n.
+- `L<x><y>(...)[(...)]`: If x is less than y, execute the 1st block of code; else, execute the 2nd block of code.
+- `M<dx><y>`: Multiply dx by y.
+- `N<f><n>`: Read a number from f to n.
+- `O<f><p>`: Open the file with path p into f*.
+- `P<e><dp>`: Set dp to the location of e in the internal heap.
+- `Q<n>`: Call function n.
+- `R<n><f><d>`: Read n bytes from f to array d.
+- `S<dx><y>`: Subtract y from dx.
+- `T<d>`: Set d to the current UNIX epoch.
+- `U<f><n>`: Write ASCII character number n to f
+- `V<s><d>`: Set variable d to s.
+- `W<f><s>`: Write s to f.
+- `X<dx><y>`: Set dx to y.
+- `Y<d>`: Set d to a random 24-bit integer.
+- `Z<f><n>`: Write number n to f.
+
+*If P is I or O, it gets replaced with either stdin or stdout.
+
+## Examples
+
+### Hello, World!
+
+```
+ofro wrHello, World!-.
+```
+
+### Cat program
+
+```
+ofro ofii rs-file wfrle krs-.
+```
+
+### 99 Bottles of Beer
+
+```
+fe(
+zfobwfo bottles of beer on the wall, -
+zfobwfo bottles of beer.-ufols-
+wfoTake one down and pass it around, -sbs-
+zfobwfo bottles of beer on the wall. -ufols-
+)
+ofoo
+vuns-b
+gs-b(qe)(gr-b(
+zfobwfo bottle of beer on the wall, -
+zfobwfo bottle of beer.-ufols-
+wfoTake one down and pass it around,-sbs-
+wfo no more bottles of beer on the wall. -ufols-
+)(
+wfo No more bottles of beer on the wall, -
+wfo no more bottles of beer.-ufols-
+wfoGo to the store and buy some more, -vb
+wfo no more bottles of beer on the wall. -ufols-
+))
+```
